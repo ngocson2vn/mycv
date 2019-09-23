@@ -5,23 +5,23 @@ import os
 import struct
 from getopt import getopt
 
-fnames = ["resume.pdf", "resume.tex"]
+fnames = ["resume.pdf", "resume-us.pdf", "resume.tex", "resume-us.tex"]
 
 def simple_encrypt(key):
 	for fn in fnames:
-		print "Encrypting file: %s" % fn
+		print("Encrypting file: {}".format(fn))
 		reader = open(fn, "rb")
 		writer = open(fn + ".encrypted", "wb")
 		data = [x for x in bytearray(reader.read())]
 		xored = [x ^ key for x in data]
 		packed = [struct.pack("i", x) for x in xored]
-		writer.write(''.join(packed))
+		writer.write(b''.join(packed))
 		reader.close()
 		writer.close()
 
 def simple_decrypt(key):
 	for fn in fnames:
-		print "Decrypting file: %s" % fn
+		print("Decrypting file: {}".format(fn))
 		reader = open(fn + ".encrypted", "rb")
 		writer = open(fn, "wb")
 		data = reader.read()
@@ -50,7 +50,7 @@ for opt, value in options:
 
 if is_encryption:
 	simple_encrypt(key)
-	print "Encrypted files: %s" % fnames
+	print("Encrypted files: {}".format(fnames))
 elif is_decryption:
 	simple_decrypt(key)
-	print "Decrypted files: %s" % fnames
+	print("Decrypted files: {}".format(fnames))
