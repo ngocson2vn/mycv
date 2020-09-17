@@ -1,0 +1,250 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[export]{adjustbox}
+\usepackage{multirow}
+\usepackage{amssymb,amsmath}
+% \usepackage[most]{tcolorbox}
+
+\usepackage{tikz}
+\usepackage{ctable}
+\usetikzlibrary{shapes.misc,shadows}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=20mm,
+ right=20mm,
+ top=16mm,
+ bottom=15mm,
+ }
+
+
+\newcommand{\Conv}{%
+  \mathop{\scalebox{1.5}{\raisebox{-0.2ex}{$\circledast$}}
+  }
+}
+
+\newcommand{\Add}{%
+  \mathop{\scalebox{1.5}{\raisebox{-0.2ex}{$\oplus$}}
+  }
+}
+
+\begin{document}
+
+\begin{equation*}
+\begin{aligned}
+& h^{sum}_{1} = x_1 * w_1 + x_2 * w_2 + b_1 \\
+& h^{sum}_{2} = x_1 * w_3 + x_2 * w_4 + b_2
+\end{aligned}
+\end{equation*}
+\\[1cm]
+\begin{equation*}
+\sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+& h_{1} = \sigma(h^{sum}_{1}) = \frac{1}{1 + e^{-h^{sum}_{1}}}\\[0.2cm]
+& h_{2} = \sigma(h^{sum}_{2}) = \frac{1}{1 + e^{-h^{sum}_{2}}}
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+o^{sum}_{1} = h_{1} * w_5 + h_{2} * w_6 + b_3 \\
+o_{1} = \sigma(o^{sum}_{1}) = \frac{1}{1 + e^{-o^{sum}_{1}}}
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+L &= \frac{1}{1}\sum_{i=1}^1{(y_i - \hat{y}_i)^2} \\
+  &= (y_{true} - y_{pred})^2 \\
+  &= (1 - 0.9824945598864127)^2 \\
+  &= 0.0003064404335703929
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+L &= (y_{true} - y_{pred})^2
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+L &= L(y_{pred})
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+y_{pred} &= o_1 \\
+         &= \sigma(o^{sum}_{1}) \\
+         &= \frac{1}{1 + e^{-o^{sum}_{1}}} \\
+         &= \frac{1}{1 + e^{-(h_{1} * w_5 + h_{2} * w_6 + b_3)}} \\
+         &= \frac{1}{1 + e^{-\Big(\frac{1}{1 + e^{-h^{sum}_{1}}} * w_5 + \frac{1}{1 + e^{-h^{sum}_{2}}} * w_6 + b_3\Big)}} \\
+         &= \frac{1}{1 + e^{-\Big(\frac{1}{1 + e^{-(x_1 * w_1 + x_2 * w_2 + b_1)}} * w_5 + \frac{1}{1 + e^{-(x_1 * w_3 + x_2 * w_4 + b_2)}} * w_6 + b_3\Big)}}
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+L &= L(y_{pred}) = L(w_1, w_2, w_3, w_4, w_5, w_6, b_1, b_2, b_3)
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+&\frac{\partial{L}}{\partial{w_i}}, \quad (i = 1, 2, 3, 4, 5, 6) \\
+&\frac{\partial{L}}{\partial{b_j}}, \quad (j = 1, 2, 3)
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+&w_i = w_i - \eta * \frac{\partial{L}}{\partial{w_i}}, \quad (i = 1, 2, 3, 4, 5, 6) \\
+&b_j = b_j - \eta * \frac{\partial{L}}{\partial{b_j}}, \quad (j = 1, 2, 3)
+\end{aligned}
+\end{equation*}
+where, $\eta$ is a constant and it is called \textbf{learning rate}.
+
+\begin{equation*}
+\begin{aligned}
+y_{pred} &= o_1 \\
+         % &= \sigma(o^{sum}_{1}) \\
+         % &= \frac{1}{1 + e^{-o^{sum}_{1}}} \\
+y_{pred} &= \frac{1}{1 + e^{-(h_{1} * w_5 + h_{2} * w_6 + b_3)}}
+         % &= \frac{1}{1 + e^{-\Big(\frac{1}{1 + e^{-h^{sum}_{1}}} * w_5 + \frac{1}{1 + e^{-h^{sum}_{2}}} * w_6 + b_3\Big)}} \\
+         % &= \frac{1}{1 + e^{-\Big(\frac{1}{1 + e^{-(x_1 * w_1 + x_2 * w_2 + b_1)}} * w_5 + \frac{1}{1 + e^{-(x_1 * w_3 + x_2 * w_4 + b_2)}} * w_6 + b_3\Big)}}
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+\frac{\partial{L}}{\partial{w_1}} &= \frac{\partial{L}}{\partial{y_{pred}}}\frac{\partial{y_{pred}}}{\partial{w_1}} \\
+                                  &= -2(y_{true} - y_{pred})\frac{\partial{y_{pred}}}{\partial{w_1}} \\[0.2cm]
+\frac{\partial{y_{pred}}}{\partial{w_1}} &= \frac{\partial{y_{pred}}}{\partial{h_1}}\frac{\partial{h_1}}{\partial{w_1}} \\[0.2cm]
+                                         &= \frac{\partial{\Big(\frac{1}{1 + e^{-(h_{1} * w_5 + h_{2} * w_6 + b_3)}}\Big)}}{\partial{h_1}}\frac{\partial{h_1}}{\partial{w_1}} \\[0.2cm]
+                                         &= \frac{\partial{\Big(\frac{1}{1 + e^{-(h_{1} * w_5 + h_{2} * w_6 + b_3)}}\Big)}}{\partial{(h_{1} * w_5 + h_{2} * w_6 + b_3)}}\frac{\partial{(h_{1} * w_5 + h_{2} * w_6 + b_3)}}{\partial{h_1}}\frac{\partial{h_1}}{\partial{w_1}} \\[0.2cm]
+                                         &= w_5\frac{\partial{\Big(\frac{1}{1 + e^{-(h_{1} * w_5 + h_{2} * w_6 + b_3)}}\Big)}}{\partial{(h_{1} * w_5 + h_{2} * w_6 + b_3)}}\frac{\partial{h_1}}{\partial{w_1}} \\[0.2cm]
+                                         &= w_5\frac{\partial{\sigma(o^{sum}_{1})}}{\partial{o^{sum}_{1}}}\frac{\partial{h_1}}{\partial{w_1}} \\
+\end{aligned}
+\end{equation*}
+\\[1cm]
+
+\begin{equation*}
+\begin{aligned}
+\frac{\partial{\sigma(o^{sum}_{1})}}{\partial{o^{sum}_{1}}} &= \sigma'(o^{sum}_{1}) = \sigma(o^{sum}_{1})(1 - \sigma(o^{sum}_{1})) \\[0.3cm]
+\frac{\partial{y_{pred}}}{\partial{w_1}} &= w_5\sigma'(o^{sum}_{1})\frac{\partial{h_1}}{\partial{w_1}} \\
+                                         &= w_5\sigma'(o^{sum}_{1})\frac{\partial{h_1}}{\partial{h^{sum}_1}}\frac{\partial{h^{sum}_1}}{\partial{w_1}} \\
+                                         &= w_5\sigma'(o^{sum}_{1})\frac{\partial{\sigma(h^{sum}_{1})}}{\partial{h^{sum}_1}}\frac{\partial{h^{sum}_1}}{\partial{w_1}} \\
+                                         &= w_5\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{1})\frac{\partial{h^{sum}_1}}{\partial{w_1}} \\
+                                         &= w_5\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{1})x_1 \\
+\end{aligned}
+\end{equation*}
+
+
+\begin{equation*}
+\begin{aligned}
+\frac{\partial{L}}{\partial{w_1}} &= -2(y_{true} - y_{pred})w_5\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{1})x_1
+\end{aligned}
+\end{equation*}
+
+
+\begin{equation*}
+\begin{aligned}
+\frac{\partial{L}}{\partial{w_2}} &= -2(y_{true} - y_{pred})w_5\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{1})x_2 \\
+\frac{\partial{L}}{\partial{w_3}} &= -2(y_{true} - y_{pred})w_6\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{2})x_1 \\
+\frac{\partial{L}}{\partial{w_4}} &= -2(y_{true} - y_{pred})w_6\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{2})x_2 \\[0.3cm]
+\frac{\partial{L}}{\partial{w_5}} &= -2(y_{true} - y_{pred})\sigma'(o^{sum}_{1})h_1 \\
+\frac{\partial{L}}{\partial{w_6}} &= -2(y_{true} - y_{pred})\sigma'(o^{sum}_{1})h_2 \\[0.3cm]
+\frac{\partial{L}}{\partial{b_1}} &= -2(y_{true} - y_{pred})w_5\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{1}) \\
+\frac{\partial{L}}{\partial{b_2}} &= -2(y_{true} - y_{pred})w_6\sigma'(o^{sum}_{1})\sigma'(h^{sum}_{2}) \\
+\frac{\partial{L}}{\partial{b_3}} &= -2(y_{true} - y_{pred})\sigma'(o^{sum}_{1}) \\
+\end{aligned}
+\end{equation*}
+
+\[
+g_1 \circledast g_2 \circledast \cdots \circledast g_n=\Conv_{i=1}^{n} g_i
+\]
+
+\[
+\underbrace{g \circledast g \circledast \cdots \circledast g}_{m}=g^{\circledast m}
+\]
+
+$\Conv$
+
+$\Add$\\[0.2cm]
+
+$\sigma$\\[0.3cm]
+
+$\boldsymbol{b}^1$\\[0.2cm]
+$\boldsymbol{b}^2$\\[0.2cm]
+$\boldsymbol{k}^1$\\[0.2cm]
+$\boldsymbol{k}^2$\\[0.2cm]
+$\boldsymbol{w}$\\[0.2cm]
+$\boldsymbol{b}$\\[0.2cm]
+$\odot$\\[0.2cm]
+
+% \tcbox[enhanced,colback=white]{\Large ReLU}
+
+$\boldsymbol{o}$\\[0.2cm]
+
+\begin{equation*}
+\begin{bmatrix}
+o_{0}\\
+o_{1}\\
+o_{2}\\
+o_{3}\\
+o_{4}\\
+o_{5}\\
+o_{6}\\
+o_{7}\\
+o_{8}\\
+o_{9}\\
+\end{bmatrix}
+\end{equation*}
+\\[0.2cm]
+$\boldsymbol{C}^1$\\[0.2cm]
+$\boldsymbol{C}^2$\\[0.2cm]
+$\boldsymbol{P}^1$\\[0.2cm]
+$\boldsymbol{P}^2$\\[0.2cm]
+$k^1_{m,n,1}$\\[0.2cm]
+$k^1_{m,n,2}$\\[0.2cm]
+$k^1_{m,n,6}$\\[0.2cm]
+$k^2_{m,n,1}$\\[0.2cm]
+$k^2_{m,n,2}$\\[0.2cm]
+$k^2_{m,n,3}$\\[0.2cm]
+$b^1_1$\\[0.2cm]
+$b^1_2$\\[0.2cm]
+$b^1_6$\\[0.2cm]
+$b^2_1$\\[0.2cm]
+$b^2_2$\\[0.2cm]
+$C^1_{g,h,1}$\\[0.2cm]
+$C^1_{g,h,2}$\\[0.2cm]
+$C^1_6$\\[0.2cm]
+$C^2_{p,q,1}$\\[0.2cm]
+$P^1_{r,s,1}$\\[0.2cm]
+$P^1_{r,s,2}$\\[0.2cm]
+$P^2_{u,v,1}$\\[0.2cm]
+
+\begin{tikzpicture}[baseline=(char.base)]
+\node(char)[draw,fill=white,
+  shape=circle,
+  minimum width=0cm]
+  {$\boldsymbol{V}$};
+\end{tikzpicture}
+
+\end{document}

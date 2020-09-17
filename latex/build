@@ -1,0 +1,8 @@
+#!/bin/bash
+
+pdflatex notes.tex
+pdflatex notes.tex
+
+if [ "$?" == "0" ]; then
+    open notes.pdf
+fi
